@@ -3,34 +3,35 @@ const fs = require("fs");
 
 async function most_player_of_match_per_season(matchFilePath) {
   const matches = await getFile(matchFilePath);
-  const res = {};
-  for (let match of matches) {
-    if (!res[match.season]) {
-      res[match.season] = {};
+  const res = matches.reduce((acc, match) => {
+    if (!acc[match.season]) {
+      acc[match.season] = {};
     }
     if (
       match["player_of_match"] !== "" &&
-      !res[match.season][match["player_of_match"]]
+      !acc[match.season][match["player_of_match"]]
     ) {
-      res[match.season][match["player_of_match"]] = 0;
+      acc[match.season][match["player_of_match"]] = 0;
     }
-    res[match.season][match["player_of_match"]] += 1;
-  }
-  const newRes = {};
-  for (let key in res) {
+    acc[match.season][match["player_of_match"]] += 1;
+    return acc;
+  }, {});
+
+  const result = Object.keys(res).reduce((newRes, key) => {
     let betterBatsman = [];
     let counter = 0;
-    for (let batsman in res[key]) {
+    Object.keys(res[key]).forEach((batsman) => {
       if (res[key][batsman] > counter) {
         counter = res[key][batsman];
         betterBatsman = [batsman];
       } else if (res[key][batsman] == counter) {
         betterBatsman.push(batsman);
       }
-    }
+    });
     newRes[key] = betterBatsman;
-  }
-  return newRes;
+    return newRes;
+  }, {});
+  return result;
 }
-module.exports = most_player_of_match_per_season;
 
+module.exports = most_player_of_match_per_season;

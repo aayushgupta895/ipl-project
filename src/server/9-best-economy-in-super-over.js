@@ -3,8 +3,7 @@ const fs = require("fs");
 
 async function best_economy_in_superover(deliveryFilePath) {
   const deliveries = await getFile(deliveryFilePath);
-  const bowlerEconomy = {};
-  for (let ball of deliveries) {
+  const bowlerEconomy = deliveries.reduce((bowlerEconomy, ball) => {
     if (ball.is_super_over !== "0") {
       if (!bowlerEconomy[ball["bowler"]]) {
         bowlerEconomy[ball["bowler"]] = {
@@ -23,22 +22,25 @@ async function best_economy_in_superover(deliveryFilePath) {
         bowlerEconomy[ball["bowler"]]["balls"] += 1;
       }
     }
-  }
+    return bowlerEconomy;
+  }, {});
+
   const economies = {};
-  for (let player in bowlerEconomy) {
+  Object.keys(bowlerEconomy).forEach((player) => {
     economies[player] =
       (bowlerEconomy[player]["run"] / bowlerEconomy[player]["balls"]) * 6;
-  }
+  });
+
   let counter = 70;
   let playerWithBestEconomy = "";
-  for (let player in economies) {
+  Object.keys(economies).forEach((player) => {
     if (economies[player] < counter) {
       counter = economies[player];
       playerWithBestEconomy = player;
     }
-  }
+  });
+
   return { playerWithBestEconomy, economy: counter };
 }
 
 module.exports = best_economy_in_superover;
-

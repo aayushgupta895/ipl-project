@@ -10,8 +10,7 @@ async function economical_bowler_by_year(
   const matches = await getFile(matchesFilePath);
   const delivery = await getFile(deliveryFilePath);
   const ids = get_the_ids(matches, year);
-  const bowlerEconomy = {};
-  for (let bowl of delivery) {
+  const bowlerEconomy = delivery.reduce((bowlerEconomy, bowl) => {
     if (ids.has(+bowl.match_id)) {
       if (!bowlerEconomy[bowl["bowler"]]) {
         bowlerEconomy[bowl["bowler"]] = {
@@ -30,21 +29,20 @@ async function economical_bowler_by_year(
         bowlerEconomy[bowl["bowler"]]["bowls"] += 1;
       }
     }
-  }
-  const res = [];
-  for (let bowler of Object.keys(bowlerEconomy)) {
+    return bowlerEconomy;
+  }, {});
+  const result = Object.keys(bowlerEconomy).reduce((res, bowler) => {
     res.push({
       name: bowler,
       economy:
         (bowlerEconomy[bowler]["run"] / bowlerEconomy[bowler]["bowls"]) * 6,
     });
-  }
-  res.sort((bowler1, bolwer2) => {
+    return res;
+  }, []);
+  result.sort((bowler1, bolwer2) => {
     return bowler1["economy"] - bolwer2["economy"];
   });
-  return res.slice(0, 10);
+  return result.slice(0, 10);
 }
 
 module.exports = economical_bowler_by_year;
-
-
