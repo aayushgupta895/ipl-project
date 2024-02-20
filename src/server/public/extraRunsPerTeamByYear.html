@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>extra runs per team by year</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      fetch("http://aayush895-ipl-project.railway.app/data/extra-runs-per-team-by-year?year=2016")
+        .then((data) => data.json())
+        .then((data) => {
+          new Highcharts.Chart({
+            chart: {
+              renderTo: "container",
+              type: "column",
+              options3d: {
+                enabled: true,
+                alpha: 0,
+                beta: -24,
+                depth: 96,
+                viewDistance: 75,
+              },
+            },
+            xAxis: {
+              title : {
+                text : 'team'
+              },
+              categories: Object.keys(data),
+            },
+            yAxis: {
+              title: {
+                text : "extra runs conceded"
+              },
+            },
+            
+            title: {
+              text: "extra run per team per year",
+              align: "left",
+            },
+            subtitle: {
+              text:
+                "based on the ipl data provided",
+              align: "left",
+            },
+            legend: {
+              enabled: false,
+            },
+            plotOptions: {
+              column: {
+                depth: 25,
+              },
+            },
+            series: [
+              {
+                data: Object.values(data),
+                colorByPoint: true,
+              },
+            ],
+          });
+        })
+        .catch((err) => {
+          console.log(`some error while fetching using api`, err);
+        });
+    </script>
+  </body>
+  <style>
+    #container {
+      width: 90vw;
+      height: 600px;
+      margin: 0 auto;
+      margin-top: 18vh;
+      padding: 10px 10px;
+      border-radius: 10px;
+      box-shadow: 10px 10px 20px #c1bebe, -10px -10px 10px #c1bebe;
+    }
+  </style>
+</html>

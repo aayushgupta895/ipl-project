@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>extra runs per team by year</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      fetch("https://aayush895-ipl-project.railway.app/data/batsman-dismissal-by-bowler")
+        .then((data) => data.json())
+        .then((data) => {
+          // Extracting player names and times
+          let playerNames = Object.keys(data);
+          let playerData = Object.values(data);
+
+          // Highcharts Column Chart
+          Highcharts.chart("container", {
+            chart: {
+              type: "column",
+            },
+            title: {
+              text: "Player Times",
+            },
+            xAxis: {
+              categories: playerNames,
+              title: {
+                text: "Player",
+              },
+            },
+            yAxis: {
+              title: {
+                text: "Times",
+              },
+            },
+            tooltip: {
+              formatter: function () {
+                let names = playerData[this.point.index].names.join(", ");
+                return (
+                  "<b>" +
+                  this.x +
+                  "</b><br>" +
+                  "Names: " +
+                  names +
+                  "<br>" +
+                  "Times: " +
+                  this.y
+                );
+              },
+            },
+            series: [
+              {
+                name: "Times",
+                data: playerData.map(function (player) {
+                  return player.times;
+                }),
+              },
+            ],
+          });
+        })
+        .catch((err) => {
+          console.log(`some error while fetching using api`, err);
+        });
+    </script>
+  </body>
+  <style>
+    #container {
+      width: 800vw;
+      height: 600px;
+      margin: 0 auto;
+      margin-top: 18vh;
+      padding: 10px 10px;
+      border-radius: 10px;
+      box-shadow: 10px 10px 20px #c1bebe, -10px -10px 10px #c1bebe;
+    }
+  </style>
+</html>

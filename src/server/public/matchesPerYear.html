@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>matches Played Per Year</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+  </head>
+  <body>
+    <div class="chart-container">
+      <div id="container"></div>
+    </div>
+    <script>
+        fetch('http://aayush895-ipl-project.railway.app/data/matches-per-year')
+        .then(data=>data.json())
+        .then(data=>{
+            Highcharts.chart("container", {
+              title: {
+                text: "Matches per year",
+                align: "left",
+              },
+              subtitle: {
+                text: "based on the ipl data provided",
+                align: "left",
+              },
+              yAxis: {
+                title: {
+                  text: "years",
+                },
+              },
+              xAxis: {
+                accessibility: {
+                  rangeDescription: "Range: 50 to 80",
+                },
+              },
+              legend: {
+                layout: "vertical",
+                align: "right",
+                verticalAlign: "middle",
+              },
+              plotOptions: {
+                series: {
+                  label: {
+                    connectorAllowed: false,
+                  },
+                  pointStart: +Object.keys(data)[0],
+                },
+              },
+              series: [
+                {
+                  name: "matches being played per year",
+                  data: Object.values(data),
+                }
+              ],
+            });
+        })
+        .catch(err=>{
+            console.log(`some error while fetching using api`, err);
+        })
+
+    </script>
+  </body>
+  <style>
+    #container {
+      width: 90vw;
+      height: 600px;
+      margin: 0 auto;
+      margin-top: 18vh;
+      padding: 10px 10px;
+      border-radius: 10px;
+      box-shadow: 10px 10px 20px #c1bebe, -10px -10px 10px #c1bebe;
+    }
+  </style>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>strike rate per player per season</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      fetch("http://aayush895-ipl-project.railway.app/data/strike-rate-per-batsman-per-season")
+        .then((data) => data.json())
+        .then((data) => {
+            const newData = [];
+            for(let index = 2008; index <= 2017; index++){
+                    const arr = []
+                    Object.keys(data).forEach(player => {
+                        const years = Object.keys(data[player]);
+                        if(years.includes(`${index}`)){
+                            arr.push(data[player][index]);
+                        }else{
+                            arr.push(`did not play`);
+                        }
+                    });
+                    newData.push({
+                        name : `${index}`,
+                        data : arr
+                    });
+                }
+                console.log(newData)
+          Highcharts.chart("container", {
+            chart: {
+              type: "bar",
+            },
+            title: {
+              text: "strike rate per player per season",
+              align: "left",
+            },
+            subtitle: {
+              text:
+                "based on the ipl data provided",
+              align: "left",
+            },
+            xAxis: {
+              categories: Object.keys(data),
+              title: {
+                text: null,
+              },
+              gridLineWidth: 1,
+              lineWidth: 0,
+            },
+            yAxis: {
+              min: 0,
+              title: {
+                text: "strike rate",
+                align: "high",
+              },
+              labels: {
+                overflow: "justify",
+              },
+              gridLineWidth: 0,
+            },
+            tooltip: {
+              valueSuffix: "",
+            },
+            plotOptions: {
+              bar: {
+                borderRadius: "50%",
+                dataLabels: {
+                  enabled: true,
+                },
+                groupPadding: 0.1,
+              },
+            },
+            legend: {
+              layout: "vertical",
+              align: "right",
+              verticalAlign: "top",
+              x: -40,
+              y: 80,
+              floating: true,
+              borderWidth: 1,
+              backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || "#FFFFFF",
+              shadow: true,
+            },
+            credits: {
+              enabled: false,
+            },
+            series: newData
+          });
+        })
+        .catch((err) => {
+          console.log(`some error while fetching using api`, err);
+        });
+    </script>
+  </body>
+  <style>
+    #container {
+      width: 90vw;
+      height: 10000vh;
+      margin: 0 auto;
+      /* margin-top: 18vh; */
+      padding: 10px 10px;
+      border-radius: 10px;
+      box-shadow: 10px 10px 20px #c1bebe, -10px -10px 10px #c1bebe;
+    }
+  </style>
+</html>

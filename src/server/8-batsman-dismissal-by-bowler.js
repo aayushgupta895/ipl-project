@@ -20,6 +20,8 @@ async function batsman_dismissal_by_bowler(deliveryFilePath) {
     }
     return res;
   }, {});
+  console.log(res);
+  // return res;
   Object.keys(res).forEach((player) => {
     let dismissals = 0;
     let betterBowler = [];
@@ -31,7 +33,9 @@ async function batsman_dismissal_by_bowler(deliveryFilePath) {
         betterBowler.push(bowler);
       }
     });
-    res[player] = betterBowler;
+    res[player] = {};
+    res[player]['names'] = betterBowler;
+    res[player]['times'] = dismissals;
   });
   return res;
 }

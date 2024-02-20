@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>matches won per team per year</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      fetch("https://aayush895-ipl-project.railway.app/data/matches-won-per-team-per-year")
+        .then((data) => data.json())
+        .then((data) => {
+          const serialArr = [];
+          Object.keys(data).forEach((element) => {
+            const keys = Object.keys(data[element]);
+            const arr = [];
+            for (let index = 2008; index <= 2017; index++) {
+              if (keys.includes(`${index}`)) {
+                console.log(data[element][`${index}`]);
+                arr.push(data[element][`${index}`]);
+              } else {
+                console.log(data[element][`${index}`]);
+                arr.push(null);
+              }
+            }
+            serialArr.push({
+              name: element,
+              data: arr,
+            });
+            console.log("serialArr", serialArr);
+
+          });
+          console.log(Object.keys(data));
+          // Highcharts.chart("container", {
+          //   chart: {
+          //     type: "bar",
+          //   },
+          //   title: {
+          //     text: "matches won per team per year",
+          //     align: "left",
+          //   },
+          //   subtitle: {
+          //     text:
+          //       "based on the ipl data provided",
+          //     align: "left",
+          //   },
+          //   xAxis: {
+          //     categories: Object.keys(data),
+          //     title: {
+          //       text: "years",
+          //     },
+          //     gridLineWidth: 1,
+          //     lineWidth: 1,
+          //   },
+          //   yAxis: {
+          //     min: 0,
+          //     title: {
+          //       text: "matches won",
+          //       align: "high",
+          //     },
+          //     labels: {
+          //       overflow: "justify",
+          //     },
+          //     gridLineWidth: 0,
+          //   },
+          //   tooltip: {
+          //     valueSuffix: "",
+          //   },
+          //   plotOptions: {
+          //     bar: {
+          //       borderRadius: "50%",
+          //       dataLabels: {
+          //         enabled: true,
+          //       },
+          //       groupPadding: 0.1,
+          //     },
+          //   },
+          //   legend: {
+          //     layout: "vertical",
+          //     align: "right",
+          //     verticalAlign: "top",
+          //     x: -40,
+          //     y: 80,
+          //     floating: true,
+          //     borderWidth: 1,
+          //     backgroundColor:
+          //       Highcharts.defaultOptions.legend.backgroundColor || "#FFFFFF",
+          //     shadow: true,
+          //   },
+          //   credits: {
+          //     enabled: false,
+          //   },
+          //   series: serialArr
+          // });
+            Highcharts.chart("container", {
+              title: {
+                text: "matches won per team per year",
+                align: "left",
+              },
+              subtitle: {
+                text: "based on the ipl data provided",
+                align: "left",
+              },
+              yAxis: {
+                title: {
+                  text: "wins per year",
+                },
+              },
+              xAxis: {
+                accessibility: {
+                  rangeDescription: "Range: 2008 to 2017",
+                },
+                title : {
+                  text : 'years'
+                }
+              },
+              legend: {
+                layout: "vertical",
+                align: "right",
+                verticalAlign: "middle",
+              },
+              plotOptions: {
+                series: {
+                  label: {
+                    connectorAllowed: false,
+                  },
+                  pointStart: 2008,
+                },
+              },
+              series: serialArr
+            });
+        })
+        .catch((err) => {
+          console.log(`some error while fetching using api`, err);
+        });
+    </script>
+  </body>
+  <style>
+    #container {
+      width: 90vw;
+      height: 600px;
+      margin: 0 auto;
+      margin-top: 18vh;
+      padding: 10px 10px;
+      border-radius: 10px;
+      box-shadow: 10px 10px 20px #c1bebe, -10px -10px 10px #c1bebe;
+    }
+  </style>
+</html>
+
+

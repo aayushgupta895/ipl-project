@@ -3,16 +3,13 @@ const getFile = require(".");
 
 async function matches_won_per_team_per_year(matchFilePath) {
   const matches = await getFile(matchFilePath);
-  const res = matches.reduce((result, match) => {
-    if (!result[match.season]) {
-      result[match.season] = {};
-    }
-    if (result[match.season][match.winner]) {
-      result[match.season][match.winner] += 1;
-    } else {
-      result[match.season][match.winner] = 1;
-    }
-    return result;
+  let res = matches.reduce((acc, curr) => {
+    if(curr.winner == "") return acc;
+    acc[curr.winner] = !acc[curr.winner] ? {} : acc[curr.winner];
+    acc[curr.winner][curr.season] = !acc[curr.winner][curr.season]
+      ? 1
+      : acc[curr.winner][curr.season] + 1;
+    return acc;
   }, {});
   return res;
 }
