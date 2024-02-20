@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>economical bowler by year</title>
+    <title>extra runs per team by year</title>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/highcharts-3d.js"></script>
@@ -14,13 +14,9 @@
   <body>
     <div id="container"></div>
     <script>
-      fetch("http://aayush895-ipl-project.railway.app/data/economical-bowler-by-year?year=2015")
+      fetch("http://aayush895-ipl-project.netlify.app/data/extra-runs-per-team-by-year?year=2016")
         .then((data) => data.json())
         .then((data) => {
-            let newData = {}
-            data.forEach(element => {
-                newData[element.name] = element.economy 
-            });
           new Highcharts.Chart({
             chart: {
               renderTo: "container",
@@ -34,27 +30,24 @@
               },
             },
             xAxis: {
-                title : {
-                    text : "players name"
-                },
-              categories: Object.keys(newData),
+              title : {
+                text : 'team'
+              },
+              categories: Object.keys(data),
             },
             yAxis: {
               title: {
-                text : "economy",
+                text : "extra runs conceded"
               },
             },
-            // tooltip: {
-            //   headerFormat: "<b>{point.key}</b><br>",
-            //   pointFormat: "Cars sold: {point.y}",
-            // },
+            
             title: {
-              text: "economical bowler by year",
+              text: "extra run per team per year",
               align: "left",
             },
             subtitle: {
               text:
-                "based on ipl data provided",
+                "based on the ipl data provided",
               align: "left",
             },
             legend: {
@@ -67,7 +60,7 @@
             },
             series: [
               {
-                data: Object.values(newData),
+                data: Object.values(data),
                 colorByPoint: true,
               },
             ],

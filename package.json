@@ -2,7 +2,7 @@
   "name": "ipl",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/server/app.js",
+  "main": "app.js",
   "scripts": {
     "start": "nodemon ./src/server/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
