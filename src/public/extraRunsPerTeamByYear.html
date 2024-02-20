@@ -14,7 +14,7 @@
   <body>
     <div id="container"></div>
     <script>
-      fetch("http://aayush895-ipl-project.netlify.app/data/extra-runs-per-team-by-year?year=2016")
+      fetch("https://aayush895-ipl-project.netlify.app/output/extra-runs-per-team-by-year.json")
         .then((data) => data.json())
         .then((data) => {
           new Highcharts.Chart({

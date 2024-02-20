@@ -11,7 +11,7 @@
       <div id="container"></div>
     </div>
     <script>
-        fetch('http://aayush895-ipl-project.netlify.app/data/matches-per-year')
+        fetch('https://aayush895-ipl-project.netlify.app/output/matches-per-year.json')
         .then(data=>data.json())
         .then(data=>{
             Highcharts.chart("container", {
