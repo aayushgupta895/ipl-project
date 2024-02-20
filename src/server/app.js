@@ -12,7 +12,7 @@ app.use('/data', router);
 app.use(express.static(path.join(__dirname,'..', 'public')));
 
 app.get("./:filename",(req,res)=>{
-  const filepath=path.join(__dirname,"public",req.url);
+  const filepath=path.join(__dirname,"..","public",req.url);
   res.sendFile(filepath)
 })
 
